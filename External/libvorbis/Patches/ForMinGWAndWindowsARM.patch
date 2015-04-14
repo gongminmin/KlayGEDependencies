@@ -1,0 +1,28 @@
+diff -u -r include/vorbis/vorbisfile.h include/vorbis/vorbisfile.h
+--- include/vorbis/vorbisfile.h
++++ include/vorbis/vorbisfile.h
+@@ -54,7 +54,11 @@
+   if(f==NULL)return(-1);
+ 
+ #ifdef __MINGW32__
+-  return fseeko64(f,off,whence);
++  #ifdef _GLIBCXX_USE_LFS
++    return fseeko64(f,off,whence);
++  #else
++    return fseek(f,off,whence);
++  #endif
+ #elif defined (_WIN32)
+   return _fseeki64(f,off,whence);
+ #else
+diff -u -r lib/os.h lib/os.h
+--- lib/os.h
++++ lib/os.h
+@@ -120,7 +120,7 @@
+ 
+ /* MSVC inline assembly. 32 bit only; inline ASM isn't implemented in the
+  * 64 bit compiler */
+-#if defined(_MSC_VER) && !defined(_WIN64) && !defined(_WIN32_WCE)
++#if defined(_MSC_VER) && !defined(_WIN64) && !defined(_WIN32_WCE) && !defined(_M_ARM)
+ #  define VORBIS_FPU_CONTROL
+ 
+ typedef ogg_int16_t vorbis_fpu_control;

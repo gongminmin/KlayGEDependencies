@@ -1,0 +1,1208 @@
+diff -u -r C/7zCrc.c C/7zCrc.c
+--- C/7zCrc.c
++++ C/7zCrc.c
+@@ -7,7 +7,11 @@
+ #define kCrcPoly 0xEDB88320
+ 
+ #ifdef MY_CPU_LE
++#ifdef NO_ASM
++#define CRC_NUM_TABLES 1
++#else
+ #define CRC_NUM_TABLES 8
++#endif
+ #else
+ #define CRC_NUM_TABLES 1
+ #endif
+@@ -67,8 +71,10 @@
+   }
+   g_CrcUpdate = CrcUpdateT4;
+   #ifdef MY_CPU_X86_OR_AMD64
++  #ifndef NO_ASM
+   if (!CPU_Is_InOrder())
+     g_CrcUpdate = CrcUpdateT8;
+   #endif
+   #endif
++  #endif
+ }
+diff -u -r C/Aes.c C/Aes.c
+--- C/Aes.c
++++ C/Aes.c
+@@ -84,6 +84,7 @@
+   g_AesCbc_Decode = AesCbc_Decode;
+   g_AesCtr_Code = AesCtr_Code;
+   #ifdef MY_CPU_X86_OR_AMD64
++  #ifndef NO_ASM
+   if (CPU_Is_Aes_Supported())
+   {
+     g_AesCbc_Encode = AesCbc_Encode_Intel;
+@@ -91,6 +92,7 @@
+     g_AesCtr_Code = AesCtr_Code_Intel;
+   }
+   #endif
++  #endif
+ }
+ 
+ #define HT(i, x, s) (T + (x << 8))[gb ## x(s[(i + x) & 3])]
+diff -u -r C/Alloc.c C/Alloc.c
+--- C/Alloc.c
++++ C/Alloc.c
+@@ -53,7 +53,11 @@
+   #ifdef _SZ_ALLOC_DEBUG
+   fprintf(stderr, "\nAlloc_Mid %10d bytes;  count = %10d", size, g_allocCountMid++);
+   #endif
++#if defined(WINAPI_FAMILY) && ((WINAPI_FAMILY == WINAPI_FAMILY_APP) || (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
++  return malloc(size);
++#else
+   return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
++#endif
+ }
+ 
+ void MidFree(void *address)
+@@ -64,7 +68,11 @@
+   #endif
+   if (address == 0)
+     return;
++#if defined(WINAPI_FAMILY) && ((WINAPI_FAMILY == WINAPI_FAMILY_APP) || (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
++  free(address);
++#else
+   VirtualFree(address, 0, MEM_RELEASE);
++#endif
+ }
+ 
+ #ifndef MEM_LARGE_PAGES
+@@ -78,6 +86,8 @@
+ 
+ void SetLargePageSize()
+ {
++#if defined(WINAPI_FAMILY) && ((WINAPI_FAMILY == WINAPI_FAMILY_APP) || (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
++#else
+   #ifdef _7ZIP_LARGE_PAGES
+   SIZE_T size = 0;
+   GetLargePageMinimumP largePageMinimum = (GetLargePageMinimumP)
+@@ -89,6 +99,7 @@
+     return;
+   g_LargePageSize = size;
+   #endif
++#endif
+ }
+ 
+ 
+@@ -103,13 +114,21 @@
+   #ifdef _7ZIP_LARGE_PAGES
+   if (g_LargePageSize != 0 && g_LargePageSize <= (1 << 30) && size >= (1 << 18))
+   {
++#if defined(WINAPI_FAMILY) && ((WINAPI_FAMILY == WINAPI_FAMILY_APP) || (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
++    void *res = malloc((size + g_LargePageSize - 1) & (~(g_LargePageSize - 1)));
++#else
+     void *res = VirtualAlloc(0, (size + g_LargePageSize - 1) & (~(g_LargePageSize - 1)),
+         MEM_COMMIT | MEM_LARGE_PAGES, PAGE_READWRITE);
++#endif
+     if (res != 0)
+       return res;
+   }
+   #endif
++#if defined(WINAPI_FAMILY) && ((WINAPI_FAMILY == WINAPI_FAMILY_APP) || (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
++  return malloc(size);
++#else
+   return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
++#endif
+ }
+ 
+ void BigFree(void *address)
+@@ -121,7 +140,11 @@
+   
+   if (address == 0)
+     return;
++#if defined(WINAPI_FAMILY) && ((WINAPI_FAMILY == WINAPI_FAMILY_APP) || (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
++  free(address);
++#else
+   VirtualFree(address, 0, MEM_RELEASE);
++#endif
+ }
+ 
+ #endif
+diff -u -r C/CpuArch.c C/CpuArch.c
+--- C/CpuArch.c
++++ C/CpuArch.c
+@@ -5,6 +5,10 @@
+ 
+ #ifdef MY_CPU_X86_OR_AMD64
+ 
++#ifndef __ANDROID__
++
++#if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY != WINAPI_FAMILY_APP)
++
+ #if (defined(_MSC_VER) && !defined(MY_CPU_AMD64)) || defined(__GNUC__)
+ #define USE_ASM
+ #endif
+@@ -145,11 +149,15 @@
+ #if !defined(MY_CPU_AMD64) && defined(_WIN32)
+ static Bool CPU_Sys_Is_SSE_Supported()
+ {
++#if defined(WINAPI_FAMILY) && ((WINAPI_FAMILY == WINAPI_FAMILY_APP) || (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP))
++  return False;
++#else
+   OSVERSIONINFO vi;
+   vi.dwOSVersionInfoSize = sizeof(vi);
+   if (!GetVersionEx(&vi))
+     return False;
+   return (vi.dwMajorVersion >= 5);
++#endif
+ }
+ #define CHECK_SYS_SSE_SUPPORT if (!CPU_Sys_Is_SSE_Supported()) return False;
+ #else
+@@ -166,3 +174,7 @@
+ }
+ 
+ #endif
++
++#endif
++
++#endif
+diff -u -r C/LzFindMt.c C/LzFindMt.c
+--- C/LzFindMt.c
++++ C/LzFindMt.c
+@@ -5,6 +5,8 @@
+ 
+ #include "LzFindMt.h"
+ 
++#ifndef _7ZIP_ST
++
+ void MtSync_Construct(CMtSync *p)
+ {
+   p->wasCreated = False;
+@@ -791,3 +793,5 @@
+     */
+   }
+ }
++
++#endif
+diff -u -r C/LzFindMt.h C/LzFindMt.h
+--- C/LzFindMt.h
++++ C/LzFindMt.h
+@@ -7,6 +7,8 @@
+ #include "LzFind.h"
+ #include "Threads.h"
+ 
++#ifndef _7ZIP_ST
++
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -103,3 +105,5 @@
+ #endif
+ 
+ #endif
++
++#endif
+diff -u -r C/Threads.c C/Threads.c
+--- C/Threads.c
++++ C/Threads.c
+@@ -1,6 +1,8 @@
+ /* Threads.c -- multithreading library
+ 2009-09-20 : Igor Pavlov : Public domain */
+ 
++#ifndef _7ZIP_ST
++
+ #ifndef _WIN32_WCE
+ #include <process.h>
+ #endif
+@@ -82,3 +84,5 @@
+   #endif
+   return 0;
+ }
++
++#endif
+diff -u -r C/Threads.h C/Threads.h
+--- C/Threads.h
++++ C/Threads.h
+@@ -10,6 +10,8 @@
+ extern "C" {
+ #endif
+ 
++#ifndef _7ZIP_ST
++
+ WRes HandlePtr_Close(HANDLE *h);
+ WRes Handle_WaitObject(HANDLE h);
+ 
+@@ -52,6 +54,8 @@
+ #define CriticalSection_Enter(p) EnterCriticalSection(p)
+ #define CriticalSection_Leave(p) LeaveCriticalSection(p)
+ 
++#endif
++
+ #ifdef __cplusplus
+ }
+ #endif
+diff -u -r CPP/7zip/Archive/7z/7zDecode.cpp CPP/7zip/Archive/7z/7zDecode.cpp
+--- CPP/7zip/Archive/7z/7zDecode.cpp
++++ CPP/7zip/Archive/7z/7zDecode.cpp
+@@ -79,7 +79,7 @@
+ 
+ CDecoder::CDecoder(bool multiThread)
+ {
+-  #ifndef _ST_MODE
++  #ifndef _7ZIP_ST
+   multiThread = true;
+   #endif
+   _multiThread = multiThread;
+@@ -147,13 +147,15 @@
+ 
+     if (_multiThread)
+     {
++      #ifndef _7ZIP_ST
+       _mixerCoderMTSpec = new NCoderMixer::CCoderMixer2MT;
+       _mixerCoder = _mixerCoderMTSpec;
+       _mixerCoderCommon = _mixerCoderMTSpec;
++      #endif
+     }
+     else
+     {
+-      #ifdef _ST_MODE
++      #ifdef _7ZIP_ST
+       _mixerCoderSTSpec = new NCoderMixer::CCoderMixer2ST;
+       _mixerCoder = _mixerCoderSTSpec;
+       _mixerCoderCommon = _mixerCoderSTSpec;
+@@ -180,11 +182,17 @@
+         decoderUnknown = (IUnknown *)decoder;
+         
+         if (_multiThread)
++        {
++          #ifndef _7ZIP_ST
+           _mixerCoderMTSpec->AddCoder(decoder);
+-        #ifdef _ST_MODE
++          #endif
++        }
+         else
++        {
++          #ifdef _7ZIP_ST
+           _mixerCoderSTSpec->AddCoder(decoder, false);
+-        #endif
++          #endif
++        }
+       }
+       else
+       {
+@@ -192,11 +200,17 @@
+           return E_NOTIMPL;
+         decoderUnknown = (IUnknown *)decoder2;
+         if (_multiThread)
++        {
++          #ifndef _7ZIP_ST
+           _mixerCoderMTSpec->AddCoder2(decoder2);
+-        #ifdef _ST_MODE
++          #endif
++        }
+         else
++        {
++          #ifdef _7ZIP_ST
+           _mixerCoderSTSpec->AddCoder2(decoder2, false);
+-        #endif
++          #endif
++		}
+       }
+       _decoders.Add(decoderUnknown);
+       #ifdef EXTERNAL_CODECS
+@@ -311,12 +325,14 @@
+   UInt32 mainCoder, temp;
+   bindInfo.FindOutStream(bindInfo.OutStreams[0], mainCoder, temp);
+ 
++  #ifndef _7ZIP_ST
+   if (_multiThread)
+     _mixerCoderMTSpec->SetProgressCoderIndex(mainCoder);
+   /*
+   else
+     _mixerCoderSTSpec->SetProgressCoderIndex(mainCoder);;
+   */
++  #endif
+   
+   if (numCoders == 0)
+     return 0;
+diff -u -r CPP/7zip/Archive/7z/7zDecode.h CPP/7zip/Archive/7z/7zDecode.h
+--- CPP/7zip/Archive/7z/7zDecode.h
++++ CPP/7zip/Archive/7z/7zDecode.h
+@@ -7,8 +7,9 @@
+ #include "../../IPassword.h"
+ 
+ #include "../Common/CoderMixer2.h"
++#ifndef _7ZIP_ST
+ #include "../Common/CoderMixer2MT.h"
+-#ifdef _ST_MODE
++#else
+ #include "../Common/CoderMixer2ST.h"
+ #endif
+ 
+@@ -35,10 +36,11 @@
+   CBindInfoEx _bindInfoExPrev;
+   
+   bool _multiThread;
+-  #ifdef _ST_MODE
++  #ifdef _7ZIP_ST
+   NCoderMixer::CCoderMixer2ST *_mixerCoderSTSpec;
+-  #endif
++  #else
+   NCoderMixer::CCoderMixer2MT *_mixerCoderMTSpec;
++  #endif
+   NCoderMixer::CCoderMixer2 *_mixerCoderCommon;
+   
+   CMyComPtr<ICompressCoder2> _mixerCoder;
+diff -u -r CPP/7zip/Archive/7z/7zExtract.cpp CPP/7zip/Archive/7z/7zExtract.cpp
+--- CPP/7zip/Archive/7z/7zExtract.cpp
++++ CPP/7zip/Archive/7z/7zExtract.cpp
+@@ -140,7 +140,7 @@
+   RINOK(extractCallback->SetTotal(importantTotalUnpacked));
+ 
+   CDecoder decoder(
+-    #ifdef _ST_MODE
++    #ifdef _7ZIP_ST
+     false
+     #else
+     true
+diff -u -r CPP/7zip/Archive/7z/7zIn.cpp CPP/7zip/Archive/7z/7zIn.cpp
+--- CPP/7zip/Archive/7z/7zIn.cpp
++++ CPP/7zip/Archive/7z/7zIn.cpp
+@@ -812,7 +812,7 @@
+   
+   CNum packIndex = 0;
+   CDecoder decoder(
+-    #ifdef _ST_MODE
++    #ifdef _7ZIP_ST
+     false
+     #else
+     true
+diff -u -r CPP/7zip/Archive/Common/CoderMixer2MT.cpp CPP/7zip/Archive/Common/CoderMixer2MT.cpp
+--- CPP/7zip/Archive/Common/CoderMixer2MT.cpp
++++ CPP/7zip/Archive/Common/CoderMixer2MT.cpp
+@@ -6,6 +6,8 @@
+ 
+ namespace NCoderMixer {
+ 
++#ifndef _7ZIP_ST
++
+ CCoder2::CCoder2(UInt32 numInStreams, UInt32 numOutStreams):
+     CCoderInfo2(numInStreams, numOutStreams)
+ {
+@@ -237,4 +239,6 @@
+   return S_OK;
+ }
+ 
++#endif
++
+ }
+diff -u -r CPP/7zip/Archive/Common/CoderMixer2MT.h CPP/7zip/Archive/Common/CoderMixer2MT.h
+--- CPP/7zip/Archive/Common/CoderMixer2MT.h
++++ CPP/7zip/Archive/Common/CoderMixer2MT.h
+@@ -10,6 +10,8 @@
+ 
+ namespace NCoderMixer {
+ 
++#ifndef _7ZIP_ST
++
+ struct CCoder2: public CCoderInfo2, public CVirtThread
+ {
+   HRESULT Result;
+@@ -76,5 +78,7 @@
+     {  return _streamBinders[binderIndex].ProcessedSize; }
+ };
+ 
++#endif
++
+ }
+ #endif
+diff -u -r CPP/7zip/Archive/Common/CoderMixer2ST.cpp CPP/7zip/Archive/Common/CoderMixer2ST.cpp
+--- CPP/7zip/Archive/Common/CoderMixer2ST.cpp
++++ CPP/7zip/Archive/Common/CoderMixer2ST.cpp
+@@ -4,7 +4,7 @@
+ 
+ #include "CoderMixer2ST.h"
+ 
+-namespace NCoderMixer2 {
++namespace NCoderMixer {
+ 
+ CCoderMixer2ST::CCoderMixer2ST() {}
+ 
+@@ -57,7 +57,7 @@
+   _bindInfo.FindOutStream(_bindInfo.BindPairs[binderIndex].OutIndex,
+       coderIndex, coderStreamIndex);
+ 
+-  CCoderInfo &coder = _coders[coderIndex];
++  CCoderInfo2 &coder = _coders[coderIndex];
+   if (!coder.Coder)
+     return E_NOTIMPL;
+   coder.Coder.QueryInterface(IID_ISequentialInStream, &seqInStream);
+@@ -106,7 +106,7 @@
+   _bindInfo.FindInStream(_bindInfo.BindPairs[binderIndex].InIndex,
+       coderIndex, coderStreamIndex);
+ 
+-  CCoderInfo &coder = _coders[coderIndex];
++  CCoderInfo2 &coder = _coders[coderIndex];
+   if (!coder.Coder)
+     return E_NOTIMPL;
+   coder.Coder.QueryInterface(IID_ISequentialOutStream, &seqOutStream);
+@@ -169,7 +169,7 @@
+  
+   // _mainCoderIndex = 0;
+   // _mainCoderIndex = _coders.Size() - 1;
+-  CCoderInfo &mainCoder = _coders[_mainCoderIndex];
++  CCoderInfo2 &mainCoder = _coders[_mainCoderIndex];
+ 
+   CObjectVector< CMyComPtr<ISequentialInStream> > seqInStreams;
+   CObjectVector< CMyComPtr<ISequentialOutStream> > seqOutStreams;
+@@ -198,7 +198,7 @@
+   {
+     if (i == _mainCoderIndex)
+       continue;
+-    CCoderInfo &coder = _coders[i];
++    CCoderInfo2 &coder = _coders[i];
+     CMyComPtr<ICompressSetOutStreamSize> setOutStreamSize;
+     coder.Coder.QueryInterface(IID_ICompressSetOutStreamSize, &setOutStreamSize);
+     if (setOutStreamSize)
+diff -u -r CPP/7zip/Archive/Common/CoderMixer2ST.h CPP/7zip/Archive/Common/CoderMixer2ST.h
+--- CPP/7zip/Archive/Common/CoderMixer2ST.h
++++ CPP/7zip/Archive/Common/CoderMixer2ST.h
+@@ -7,7 +7,7 @@
+ #include "../../../Common/MyCom.h"
+ #include "../../ICoder.h"
+ 
+-namespace NCoderMixer2 {
++namespace NCoderMixer {
+ 
+ //  SetBindInfo()
+ //  for each coder
+@@ -26,11 +26,11 @@
+ //    Code
+ //  }
+ 
+-struct CSTCoderInfo: public CCoderInfo
++struct CSTCoderInfo: public CCoderInfo2
+ {
+   bool IsMain;
+   CSTCoderInfo(UInt32 numInStreams, UInt32 numOutStreams, bool isMain):
+-    CCoderInfo(numInStreams, numOutStreams),IsMain(isMain) {}
++    CCoderInfo2(numInStreams, numOutStreams),IsMain(isMain) {}
+ };
+ 
+ class CCoderMixer2ST:
+diff -u -r CPP/7zip/Archive/Common/CrossThreadProgress.cpp CPP/7zip/Archive/Common/CrossThreadProgress.cpp
+--- CPP/7zip/Archive/Common/CrossThreadProgress.cpp
++++ CPP/7zip/Archive/Common/CrossThreadProgress.cpp
+@@ -4,6 +4,8 @@
+ 
+ #include "CrossThreadProgress.h"
+ 
++#ifndef _7ZIP_ST
++
+ STDMETHODIMP CCrossThreadProgress::SetRatioInfo(const UInt64 *inSize, const UInt64 *outSize)
+ {
+   InSize = inSize;
+@@ -13,3 +15,4 @@
+   return Result;
+ }
+ 
++#endif
+diff -u -r CPP/7zip/Archive/Common/CrossThreadProgress.h CPP/7zip/Archive/Common/CrossThreadProgress.h
+--- CPP/7zip/Archive/Common/CrossThreadProgress.h
++++ CPP/7zip/Archive/Common/CrossThreadProgress.h
+@@ -7,6 +7,8 @@
+ #include "../../../Windows/Synchronization.h"
+ #include "../../../Common/MyCom.h"
+ 
++#ifndef _7ZIP_ST
++
+ class CCrossThreadProgress:
+   public ICompressProgressInfo,
+   public CMyUnknownImp
+@@ -35,3 +37,5 @@
+ };
+ 
+ #endif
++
++#endif
+diff -u -r CPP/7zip/Archive/Common/ItemNameUtils.cpp CPP/7zip/Archive/Common/ItemNameUtils.cpp
+--- CPP/7zip/Archive/Common/ItemNameUtils.cpp
++++ CPP/7zip/Archive/Common/ItemNameUtils.cpp
+@@ -42,7 +42,11 @@
+     return false;
+   LPCSTR prev =
+   #if defined(_WIN32) && !defined(UNDER_CE)
++  #ifdef IS_WINDOWS_RUNTIME
++    (LPCSTR)(name) + (name.Length() - 1);
++  #else
+     CharPrevExA((WORD)codePage, name, &name[name.Length()], 0);
++  #endif
+   #else
+     (LPCSTR)(name) + (name.Length() - 1);
+   #endif
+diff -u -r CPP/7zip/Archive/DllExports2.cpp CPP/7zip/Archive/DllExports2.cpp
+--- CPP/7zip/Archive/DllExports2.cpp
++++ CPP/7zip/Archive/DllExports2.cpp
+@@ -22,6 +22,7 @@
+ 
+ #define NT_CHECK_FAIL_ACTION return FALSE;
+ 
++#ifdef _WIN32
+ extern "C"
+ BOOL WINAPI DllMain(
+   #ifdef UNDER_CE
+@@ -38,6 +39,7 @@
+   }
+   return TRUE;
+ }
++#endif
+ 
+ DEFINE_GUID(CLSID_CArchiveHandler,
+ 0x23170F69, 0x40C1, 0x278A, 0x10, 0x00, 0x00, 0x01, 0x10, 0x00, 0x00, 0x00);
+diff -u -r CPP/7zip/Common/LockedStream.cpp CPP/7zip/Common/LockedStream.cpp
+--- CPP/7zip/Common/LockedStream.cpp
++++ CPP/7zip/Common/LockedStream.cpp
+@@ -7,7 +7,9 @@
+ HRESULT CLockedInStream::Read(UInt64 startPos, void *data, UInt32 size,
+   UInt32 *processedSize)
+ {
++#ifndef _7ZIP_ST
+   NWindows::NSynchronization::CCriticalSectionLock lock(_criticalSection);
++#endif
+   RINOK(_stream->Seek(startPos, STREAM_SEEK_SET, NULL));
+   return _stream->Read(data, size, processedSize);
+ }
+diff -u -r CPP/7zip/Common/LockedStream.h CPP/7zip/Common/LockedStream.h
+--- CPP/7zip/Common/LockedStream.h
++++ CPP/7zip/Common/LockedStream.h
+@@ -10,7 +10,9 @@
+ class CLockedInStream
+ {
+   CMyComPtr<IInStream> _stream;
++#ifndef _7ZIP_ST
+   NWindows::NSynchronization::CCriticalSection _criticalSection;
++#endif
+ public:
+   void Init(IInStream *stream)
+     { _stream = stream; }
+diff -u -r CPP/7zip/Common/StreamBinder.cpp CPP/7zip/Common/StreamBinder.cpp
+--- CPP/7zip/Common/StreamBinder.cpp
++++ CPP/7zip/Common/StreamBinder.cpp
+@@ -9,6 +9,8 @@
+ using namespace NWindows;
+ using namespace NSynchronization;
+ 
++#ifndef _7ZIP_ST
++
+ class CSequentialInStreamForBinder:
+   public ISequentialInStream,
+   public CMyUnknownImp
+@@ -148,3 +150,5 @@
+   // _bufferSize must be = 0
+   _thereAreBytesToReadEvent.Set();
+ }
++
++#endif
+diff -u -r CPP/7zip/Common/StreamBinder.h CPP/7zip/Common/StreamBinder.h
+--- CPP/7zip/Common/StreamBinder.h
++++ CPP/7zip/Common/StreamBinder.h
+@@ -6,6 +6,8 @@
+ #include "../IStream.h"
+ #include "../../Windows/Synchronization.h"
+ 
++#ifndef _7ZIP_ST
++
+ class CStreamBinder
+ {
+   NWindows::NSynchronization::CManualResetEvent _allBytesAreWritenEvent;
+@@ -30,3 +32,5 @@
+ };
+ 
+ #endif
++
++#endif
+diff -u -r CPP/7zip/Common/StreamObjects.cpp CPP/7zip/Common/StreamObjects.cpp
+--- CPP/7zip/Common/StreamObjects.cpp
++++ CPP/7zip/Common/StreamObjects.cpp
+@@ -4,6 +4,10 @@
+ 
+ #include "../../../C/Alloc.h"
+ 
++#if defined(__APPLE__) || defined(__linux__)
++#include <stdlib.h>
++#endif
++
+ #include "StreamObjects.h"
+ 
+ STDMETHODIMP CBufInStream::Read(void *data, UInt32 size, UInt32 *processedSize)
+@@ -78,7 +82,7 @@
+ void CDynBufSeqOutStream::CopyToBuffer(CByteBuffer &dest) const
+ {
+   dest.SetCapacity(_size);
+-  memcpy(dest, _buffer, _size);
++  memcpy(dest, static_cast<const unsigned char*>(_buffer), _size);
+ }
+ 
+ STDMETHODIMP CDynBufSeqOutStream::Write(const void *data, UInt32 size, UInt32 *processedSize)
+diff -u -r CPP/7zip/Common/VirtThread.cpp CPP/7zip/Common/VirtThread.cpp
+--- CPP/7zip/Common/VirtThread.cpp
++++ CPP/7zip/Common/VirtThread.cpp
+@@ -4,6 +4,8 @@
+ 
+ #include "VirtThread.h"
+ 
++#ifndef _7ZIP_ST
++
+ static THREAD_FUNC_DECL CoderThread(void *p)
+ {
+   for (;;)
+@@ -44,3 +46,4 @@
+     Thread.Wait();
+ }
+ 
++#endif
+diff -u -r CPP/7zip/Common/VirtThread.h CPP/7zip/Common/VirtThread.h
+--- CPP/7zip/Common/VirtThread.h
++++ CPP/7zip/Common/VirtThread.h
+@@ -6,6 +6,7 @@
+ #include "../../Windows/Synchronization.h"
+ #include "../../Windows/Thread.h"
+ 
++#ifndef _7ZIP_ST
+ struct CVirtThread
+ {
+   NWindows::NSynchronization::CAutoResetEvent StartEvent;
+@@ -19,5 +20,6 @@
+   void WaitFinish() { FinishedEvent.Lock(); }
+   virtual void Execute() = 0;
+ };
++#endif
+ 
+ #endif
+diff -u -r CPP/7zip/Crypto/7zAes.cpp CPP/7zip/Crypto/7zAes.cpp
+--- CPP/7zip/Crypto/7zAes.cpp
++++ CPP/7zip/Crypto/7zAes.cpp
+@@ -92,7 +92,10 @@
+ }
+ 
+ static CKeyInfoCache g_GlobalKeyCache(32);
++
++#ifndef _7ZIP_ST
+ static NSynchronization::CCriticalSection g_GlobalKeyCacheCriticalSection;
++#endif
+ 
+ CBase::CBase():
+   _cachedKeys(16),
+@@ -104,7 +107,9 @@
+ 
+ void CBase::CalculateDigest()
+ {
++#ifndef _7ZIP_ST
+   NSynchronization::CCriticalSectionLock lock(g_GlobalKeyCacheCriticalSection);
++#endif
+   if (_cachedKeys.Find(_key))
+     g_GlobalKeyCache.Add(_key);
+   else
+diff -u -r CPP/Common/MyCom.h CPP/Common/MyCom.h
+--- CPP/Common/MyCom.h
++++ CPP/Common/MyCom.h
+@@ -52,7 +52,7 @@
+     _p = NULL;
+     return pt;
+   }
+-  #ifdef _WIN32
++  #ifdef IS_WINDOWS_DESKTOP
+   HRESULT CoCreateInstance(REFCLSID rclsid, REFIID iid, LPUNKNOWN pUnkOuter = NULL, DWORD dwClsContext = CLSCTX_ALL)
+   {
+     return ::CoCreateInstance(rclsid, pUnkOuter, dwClsContext, iid, (void**)&_p);
+diff -u -r CPP/Common/MyString.cpp CPP/Common/MyString.cpp
+--- CPP/Common/MyString.cpp
++++ CPP/Common/MyString.cpp
+@@ -10,6 +10,7 @@
+ #include "StringConvert.h"
+ #endif
+ 
++#include "MyWindows.h"
+ #include "MyString.h"
+ 
+ 
+@@ -132,6 +133,19 @@
+   return toupper(c);
+ }
+ 
++wchar_t * MyStringUpper(wchar_t *s)
++{
++  if (s == 0)
++    return 0;
++  wchar_t *ret = s;
++  while (*s)
++  {
++    *s = MyCharUpper(*s);
++    s++;
++  }
++  return ret;
++}
++
+ /*
+ int MyStringCollateNoCase(const wchar_t *s1, const wchar_t *s2)
+ {
+diff -u -r CPP/Common/MyString.h CPP/Common/MyString.h
+--- CPP/Common/MyString.h
++++ CPP/Common/MyString.h
+@@ -3,6 +3,15 @@
+ #ifndef __COMMON_STRING_H
+ #define __COMMON_STRING_H
+ 
++#ifdef IS_WINDOWS_RUNTIME
++#ifndef _SCL_SECURE_NO_WARNINGS
++#define _SCL_SECURE_NO_WARNINGS
++#endif
++#include <locale>
++#include <algorithm>
++#include <functional>
++#endif
++
+ #include <string.h>
+ 
+ #include "MyVector.h"
+@@ -39,25 +48,47 @@
+   #ifdef UNDER_CE
+   return p + 1;
+   #else
++  #ifdef IS_WINDOWS_RUNTIME
++  return p + 1;
++  #else
+   return CharNextA(p);
+   #endif
++  #endif
+ }
+ 
+ inline const char* MyStringGetPrevCharPointer(const char *base, const char *p)
+-  { return CharPrevA(base, p); }
++{
++#ifdef IS_WINDOWS_RUNTIME
++  return (base == p) ? p : p - 1;
++#else
++  return CharPrevA(base, p);
++#endif
++}
+ 
+ inline char MyCharUpper(char c)
++#ifdef IS_WINDOWS_RUNTIME
++  { return std::toupper<char>(c, std::locale("")); }
++#else
+   { return (char)(unsigned int)(UINT_PTR)CharUpperA((LPSTR)(UINT_PTR)(unsigned int)(unsigned char)c); }
++#endif
+ #ifdef _UNICODE
+ inline wchar_t MyCharUpper(wchar_t c)
++#ifdef IS_WINDOWS_RUNTIME
++  { return std::toupper<wchar_t>(c, std::locale("")); }
++#else
+   { return (wchar_t)(unsigned int)(UINT_PTR)CharUpperW((LPWSTR)(UINT_PTR)(unsigned int)c); }
++#endif
+ #else
+ wchar_t MyCharUpper(wchar_t c);
+ #endif
+ 
+ #ifdef _UNICODE
+ inline wchar_t MyCharLower(wchar_t c)
++#ifdef IS_WINDOWS_RUNTIME
++  { return std::tolower<wchar_t>(c, std::locale("")); }
++#else
+   { return (wchar_t)(unsigned int)(UINT_PTR)CharLowerW((LPWSTR)(UINT_PTR)(unsigned int)c); }
++#endif
+ #else
+ wchar_t MyCharLower(wchar_t c);
+ #endif
+@@ -66,25 +97,62 @@
+ #ifdef UNDER_CE
+   { return (char)MyCharLower((wchar_t)c); }
+ #else
++#ifdef IS_WINDOWS_RUNTIME
++  { return std::tolower<char>(c, std::locale("")); }
++#else
+   { return (char)(unsigned int)(UINT_PTR)CharLowerA((LPSTR)(UINT_PTR)(unsigned int)(unsigned char)c); }
+ #endif
++#endif
+ 
++#ifdef IS_WINDOWS_RUNTIME
++inline char * MyStringUpper(char *s)
++{
++  std::transform(s, s + MyStringLen(s), s, std::bind2nd(std::ptr_fun(&std::toupper<char>), std::locale("")));
++  return s;
++}
++#else
+ inline char * MyStringUpper(char *s) { return CharUpperA(s); }
++#endif
+ #ifdef _UNICODE
++#ifdef IS_WINDOWS_RUNTIME
++inline wchar_t * MyStringUpper(wchar_t *s)
++{
++  std::transform(s, s + MyStringLen(s), s, std::bind2nd(std::ptr_fun(&std::toupper<wchar_t>), std::locale("")));
++  return s;
++}
++#else
+ inline wchar_t * MyStringUpper(wchar_t *s) { return CharUpperW(s); }
++#endif
+ #else
+ wchar_t * MyStringUpper(wchar_t *s);
+ #endif
+ 
++#ifdef IS_WINDOWS_RUNTIME
++inline char * MyStringLower(char *s)
++{
++  std::transform(s, s + MyStringLen(s), s, std::bind2nd(std::ptr_fun(&std::tolower<char>), std::locale("")));
++  return s;
++}
++#else
+ inline char * MyStringLower(char *s) { return CharLowerA(s); }
++#endif
+ #ifdef _UNICODE
++#ifdef IS_WINDOWS_RUNTIME
++inline wchar_t * MyStringLower(wchar_t *s)
++{
++  std::transform(s, s + MyStringLen(s), s, std::bind2nd(std::ptr_fun(&std::tolower<wchar_t>), std::locale("")));
++  return s;
++}
++#else
+ inline wchar_t * MyStringLower(wchar_t *s) { return CharLowerW(s); }
++#endif
+ #else
+ wchar_t * MyStringLower(wchar_t *s);
+ #endif
+ 
+ #else // Standard-C
+ wchar_t MyCharUpper(wchar_t c);
++wchar_t * MyStringUpper(wchar_t *s);
+ #endif
+ 
+ //////////////////////////////////////
+diff -u -r CPP/Common/MyWindows.cpp CPP/Common/MyWindows.cpp
+--- CPP/Common/MyWindows.cpp
++++ CPP/Common/MyWindows.cpp
+@@ -2,11 +2,11 @@
+ 
+ #include "StdAfx.h"
+ 
+-#ifndef _WIN32
+-
+ #include "MyWindows.h"
++
++#ifndef IS_WINDOWS_DESKTOP
+ #include "Types.h"
+-#include <malloc.h>
++#include <stdlib.h>
+ 
+ static inline void *AllocateForBSTR(size_t cb) { return ::malloc(cb); }
+ static inline void FreeForBSTR(void *pv) { ::free(pv);}
+@@ -18,7 +18,7 @@
+   return i;
+ }
+ 
+-BSTR SysAllocStringByteLen(LPCSTR psz, UINT len)
++STDAPI_(BSTR) SysAllocStringByteLen(LPCSTR psz, UINT len)
+ {
+   int realLen = len + sizeof(UINT) + sizeof(OLECHAR) + sizeof(OLECHAR);
+   void *p = AllocateForBSTR(realLen);
+@@ -33,7 +33,7 @@
+   return bstr;
+ }
+ 
+-BSTR SysAllocString(const OLECHAR *sz)
++STDAPI_(BSTR) SysAllocString(const OLECHAR *sz)
+ {
+   if (sz == 0)
+     return 0;
+@@ -48,25 +48,25 @@
+   return bstr;
+ }
+ 
+-void SysFreeString(BSTR bstr)
++STDAPI_(void) SysFreeString(BSTR bstr)
+ {
+   if (bstr != 0)
+     FreeForBSTR((UINT *)bstr - 1);
+ }
+ 
+-UINT SysStringByteLen(BSTR bstr)
++STDAPI_(UINT) SysStringByteLen(BSTR bstr)
+ {
+   if (bstr == 0)
+     return 0;
+   return *((UINT *)bstr - 1);
+ }
+ 
+-UINT SysStringLen(BSTR bstr)
++STDAPI_(UINT) SysStringLen(BSTR bstr)
+ {
+   return SysStringByteLen(bstr) / sizeof(OLECHAR);
+ }
+ 
+-HRESULT VariantClear(VARIANTARG *prop)
++STDAPI_(HRESULT) VariantClear(VARIANTARG *prop)
+ {
+   if (prop->vt == VT_BSTR)
+     SysFreeString(prop->bstrVal);
+@@ -74,7 +74,7 @@
+   return S_OK;
+ }
+ 
+-HRESULT VariantCopy(VARIANTARG *dest, VARIANTARG *src)
++STDAPI_(HRESULT) VariantCopy(VARIANTARG *dest, const VARIANTARG *src)
+ {
+   HRESULT res = ::VariantClear(dest);
+   if (res != S_OK)
+@@ -92,7 +92,7 @@
+   return S_OK;
+ }
+ 
+-LONG CompareFileTime(const FILETIME* ft1, const FILETIME* ft2)
++STDAPI_(LONG) CompareFileTime(const FILETIME* ft1, const FILETIME* ft2)
+ {
+   if (ft1->dwHighDateTime < ft2->dwHighDateTime) return -1;
+   if (ft1->dwHighDateTime > ft2->dwHighDateTime) return 1;
+@@ -101,9 +101,11 @@
+   return 0;
+ }
+ 
+-DWORD GetLastError()
++#ifndef _WIN32
++STDAPI_(DWORD) GetLastError()
+ {
+   return 0;
+ }
++#endif
+ 
+ #endif
+diff -u -r CPP/Common/MyWindows.h CPP/Common/MyWindows.h
+--- CPP/Common/MyWindows.h
++++ CPP/Common/MyWindows.h
+@@ -3,10 +3,42 @@
+ #ifndef __MYWINDOWS_H
+ #define __MYWINDOWS_H
+ 
+-#ifdef _WIN32
++#if _WIN32
++
++#if defined(__MINGW32__)
++#include <_mingw.h>
++#ifndef WINVER
++#define WINVER 0x0501
++#endif
++#else
++#include <sdkddkver.h>
++#endif
++
++#if (_WIN32_WINNT >= 0x0602 /*_WIN32_WINNT_WIN8*/)
++#	include <winapifamily.h>
++#	if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
++#		define IS_WINDOWS_DESKTOP
++#	elif WINAPI_FAMILY == WINAPI_FAMILY_APP
++#		define IS_WINDOWS_STORE
++#		define IS_WINDOWS_RUNTIME
++#	elif WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP
++#		define IS_WINDOWS_PHONE
++#		define IS_WINDOWS_RUNTIME
++#	endif
++#else
++#	define IS_WINDOWS_DESKTOP
++#endif
++
++#ifndef IS_WINDOWS_DESKTOP
++#define _OLEAUT32_
++#endif
+ 
+ #include <windows.h>
+ 
++#ifdef IS_WINDOWS_PHONE
++#include <oleauto.h>
++#endif
++
+ #else
+ 
+ #include <stddef.h> // for wchar_t
+@@ -14,6 +46,9 @@
+ 
+ #include "MyGuidDef.h"
+ 
++#undef BOOL
++typedef int BOOL;
++
+ typedef char CHAR;
+ typedef unsigned char UCHAR;
+ 
+@@ -76,10 +111,15 @@
+ 
+ #ifdef _MSC_VER
+ #define STDMETHODCALLTYPE __stdcall
++#define STDAPICALLTYPE          __stdcall
+ #else
+ #define STDMETHODCALLTYPE
++#define STDAPICALLTYPE
+ #endif
+ 
++#define STDAPI                  MY_EXTERN_C HRESULT STDAPICALLTYPE
++#define STDAPI_(type)           MY_EXTERN_C type STDAPICALLTYPE
++
+ #define STDMETHOD_(t, f) virtual t STDMETHODCALLTYPE f
+ #define STDMETHOD(f) STDMETHOD_(HRESULT, f)
+ #define STDMETHODIMP_(type) type STDMETHODCALLTYPE
+@@ -177,7 +217,7 @@
+ typedef VARIANT VARIANTARG;
+ 
+ MY_EXTERN_C HRESULT VariantClear(VARIANTARG *prop);
+-MY_EXTERN_C HRESULT VariantCopy(VARIANTARG *dest, VARIANTARG *src);
++MY_EXTERN_C HRESULT VariantCopy(VARIANTARG *dest, const VARIANTARG *src);
+ 
+ #endif
+ 
+@@ -200,5 +240,15 @@
+   STREAM_SEEK_END = 2
+ } STREAM_SEEK;
+ 
++#define CLASS_E_CLASSNOTAVAILABLE        ((HRESULT)0x80040111L)
++
++typedef struct  tagSTATPROPSTG {
++    LPOLESTR lpwstrName;
++    PROPID propid;
++    VARTYPE vt;
++} STATPROPSTG;
++
++typedef void *HINSTANCE;
++
+ #endif
+ #endif
+diff -u -r CPP/Common/StringConvert.cpp CPP/Common/StringConvert.cpp
+--- CPP/Common/StringConvert.cpp
++++ CPP/Common/StringConvert.cpp
+@@ -49,7 +49,7 @@
+   return UnicodeStringToMultiByte(srcString, codePage, '_', defaultCharWasUsed);
+ }
+ 
+-#ifndef UNDER_CE
++#if !defined(UNDER_CE) && !defined(IS_WINDOWS_RUNTIME)
+ AString SystemStringToOemString(const CSysString &srcString)
+ {
+   AString result;
+diff -u -r CPP/Windows/NtCheck.h CPP/Windows/NtCheck.h
+--- CPP/Windows/NtCheck.h
++++ CPP/Windows/NtCheck.h
+@@ -5,7 +5,7 @@
+ 
+ #ifdef _WIN32
+ 
+-#if !defined(_WIN64) && !defined(UNDER_CE)
++#if !defined(_WIN64) && !defined(UNDER_CE) && !defined(IS_WINDOWS_RUNTIME)
+ static inline bool IsItWindowsNT()
+ {
+   OSVERSIONINFO vi;
+@@ -25,7 +25,7 @@
+   #define NT_CHECK_ACTION
+   // #define NT_CHECK_ACTION { NT_CHECK_FAIL_ACTION }
+ #else
+-  #if !defined(_WIN64) && !defined(UNDER_CE)
++  #if !defined(_WIN64) && !defined(UNDER_CE) && !defined(IS_WINDOWS_RUNTIME)
+     #define NT_CHECK_ACTION if (!IsItWindowsNT()) { NT_CHECK_FAIL_ACTION }
+   #else
+     #define NT_CHECK_ACTION
+diff -u -r CPP/Windows/PropVariant.cpp CPP/Windows/PropVariant.cpp
+--- CPP/Windows/PropVariant.cpp
++++ CPP/Windows/PropVariant.cpp
+@@ -232,7 +232,11 @@
+     case VT_I8: return MyCompare(hVal.QuadPart, a.hVal.QuadPart);
+     case VT_UI8: return MyCompare(uhVal.QuadPart, a.uhVal.QuadPart);
+     case VT_BOOL: return -MyCompare(boolVal, a.boolVal);
++#ifdef IS_WINDOWS_RUNTIME
++    case VT_FILETIME: return 0;
++#else
+     case VT_FILETIME: return ::CompareFileTime(&filetime, &a.filetime);
++#endif
+     case VT_BSTR:
+       return 0; // Not implemented
+       // return MyCompare(aPropVarint.cVal);
+diff -u -r CPP/Windows/Synchronization.h CPP/Windows/Synchronization.h
+--- CPP/Windows/Synchronization.h
++++ CPP/Windows/Synchronization.h
+@@ -14,6 +14,8 @@
+ namespace NWindows {
+ namespace NSynchronization {
+ 
++#ifndef _7ZIP_ST
++
+ class CBaseEvent
+ {
+ protected:
+@@ -159,6 +161,8 @@
+   ~CCriticalSectionLock() { Unlock(); }
+ };
+ 
++#endif
++
+ }}
+ 
+ #endif
+diff -u -r CPP/Windows/System.cpp CPP/Windows/System.cpp
+--- CPP/Windows/System.cpp
++++ CPP/Windows/System.cpp
+@@ -11,11 +11,21 @@
+ 
+ UInt32 GetNumberOfProcessors()
+ {
++#ifdef _WINDOWS
+   SYSTEM_INFO systemInfo;
++#ifdef IS_WINDOWS_RUNTIME
++  GetNativeSystemInfo(&systemInfo);
++#else
+   GetSystemInfo(&systemInfo);
++#endif
+   return (UInt32)systemInfo.dwNumberOfProcessors;
++#else
++  return 1;
++#endif
+ }
+ 
++#ifdef _WINDOWS
++
+ #ifndef UNDER_CE
+ 
+ #if !defined(_WIN64) && defined(__GNUC__)
+@@ -39,12 +49,17 @@
+ 
+ #endif
+ 
++#ifdef IS_WINDOWS_DESKTOP
+ typedef BOOL (WINAPI *GlobalMemoryStatusExP)(MY_LPMEMORYSTATUSEX lpBuffer);
++#endif
+ 
+ #endif
+ 
+ UInt64 GetRamSize()
+ {
++#ifdef IS_WINDOWS_RUNTIME
++  return 0;
++#else
+   #ifndef UNDER_CE
+   MY_MEMORYSTATUSEX stat;
+   stat.dwLength = sizeof(stat);
+@@ -67,6 +82,9 @@
+     return MyMin(stat.dwTotalVirtual, stat.dwTotalPhys);
+   }
+   #endif
++#endif
+ }
+ 
++#endif
++
+ }}
+diff -u -r CPP/Windows/Thread.h CPP/Windows/Thread.h
+--- CPP/Windows/Thread.h
++++ CPP/Windows/Thread.h
+@@ -9,6 +9,7 @@
+ 
+ namespace NWindows {
+ 
++#ifndef _7ZIP_ST
+ class CThread
+ {
+   ::CThread thread;
+@@ -32,6 +33,7 @@
+   bool SetPriority(int priority) { return BOOLToBool(::SetThreadPriority(thread, priority)); }
+   #endif
+ };
++#endif
+ 
+ }
+ 

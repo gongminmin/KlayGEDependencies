@@ -1,0 +1,301 @@
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Properties/AssemblyInfo.cs Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Properties/AssemblyInfo.cs
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Properties/AssemblyInfo.cs
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Properties/AssemblyInfo.cs
+@@ -64,7 +64,7 @@ using System;
+ 
+ #pragma warning disable 1699
+ [assembly: AssemblyDelaySign( false )]
+-[assembly: AssemblyKeyFile( @"..\..\sn.snk" )]
++[assembly: AssemblyKeyFile( @"..\..\..\sn.snk" )]
+ [assembly: AssemblyKeyName( "" )]
+ #pragma warning restore 1699
+ 
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Xceed.Wpf.AvalonDock.Themes.Aero.csproj Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Xceed.Wpf.AvalonDock.Themes.Aero.csproj
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Xceed.Wpf.AvalonDock.Themes.Aero.csproj
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Aero/Xceed.Wpf.AvalonDock.Themes.Aero.csproj
+@@ -16,19 +16,34 @@
+     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+     <DebugSymbols>true</DebugSymbols>
+-    <DebugType>full</DebugType>
+-    <Optimize>false</Optimize>
+-    <OutputPath>bin\Debug\</OutputPath>
+-    <DefineConstants>DEBUG;TRACE</DefineConstants>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
++    <DebugType>none</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MinSizeRel|x64'">
++    <DebugType>pdbonly</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RelWithDebInfo|x64'">
+     <DebugType>pdbonly</DebugType>
+     <Optimize>true</Optimize>
+-    <OutputPath>bin\Release\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Properties/AssemblyInfo.cs Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Properties/AssemblyInfo.cs
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Properties/AssemblyInfo.cs
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Properties/AssemblyInfo.cs
+@@ -64,6 +64,6 @@ using System;
+ 
+ #pragma warning disable 1699
+ [assembly: AssemblyDelaySign( false )]
+-[assembly: AssemblyKeyFile( @"..\..\sn.snk" )]
++[assembly: AssemblyKeyFile( @"..\..\..\sn.snk" )]
+ [assembly: AssemblyKeyName( "" )]
+ #pragma warning restore 1699
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Xceed.Wpf.AvalonDock.Themes.Metro.csproj Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Xceed.Wpf.AvalonDock.Themes.Metro.csproj
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Xceed.Wpf.AvalonDock.Themes.Metro.csproj
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.Metro/Xceed.Wpf.AvalonDock.Themes.Metro.csproj
+@@ -16,19 +16,35 @@
+     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>full</DebugType>
+     <Optimize>false</Optimize>
+-    <OutputPath>bin\Debug\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>DEBUG;TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
++    <DebugType>none</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MinSizeRel|x64'">
++    <DebugType>pdbonly</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RelWithDebInfo|x64'">
+     <DebugType>pdbonly</DebugType>
+     <Optimize>true</Optimize>
+-    <OutputPath>bin\Release\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Properties/AssemblyInfo.cs Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Properties/AssemblyInfo.cs
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Properties/AssemblyInfo.cs
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Properties/AssemblyInfo.cs
+@@ -63,6 +63,6 @@ using System;
+ 
+ #pragma warning disable 1699
+ [assembly: AssemblyDelaySign( false )]
+-[assembly: AssemblyKeyFile( @"..\..\sn.snk" )]
++[assembly: AssemblyKeyFile( @"..\..\..\sn.snk" )]
+ [assembly: AssemblyKeyName( "" )]
+ #pragma warning restore 1699
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Xceed.Wpf.AvalonDock.Themes.VS2010.csproj Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Xceed.Wpf.AvalonDock.Themes.VS2010.csproj
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Xceed.Wpf.AvalonDock.Themes.VS2010.csproj
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock.Themes.VS2010/Xceed.Wpf.AvalonDock.Themes.VS2010.csproj
+@@ -18,19 +18,35 @@
+     <Utf8Output>true</Utf8Output>
+     <ExpressionBlendVersion>4.0.20901.0</ExpressionBlendVersion>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>full</DebugType>
+     <Optimize>false</Optimize>
+-    <OutputPath>bin\Debug\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>DEBUG;TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
++    <DebugType>none</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MinSizeRel|x64'">
++    <DebugType>pdbonly</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RelWithDebInfo|x64'">
+     <DebugType>pdbonly</DebugType>
+     <Optimize>true</Optimize>
+-    <OutputPath>bin\Release\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Properties/AssemblyInfo.cs Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Properties/AssemblyInfo.cs
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Properties/AssemblyInfo.cs
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Properties/AssemblyInfo.cs
+@@ -69,7 +69,7 @@ using System;
+ 
+ #pragma warning disable 1699
+ [assembly: AssemblyDelaySign( false )]
+-[assembly: AssemblyKeyFile( @"..\..\sn.snk" )]
++[assembly: AssemblyKeyFile( @"..\..\..\sn.snk" )]
+ [assembly: AssemblyKeyName( "" )]
+ #pragma warning restore 1699
+ 
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Xceed.Wpf.AvalonDock.csproj Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Xceed.Wpf.AvalonDock.csproj
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Xceed.Wpf.AvalonDock.csproj
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.AvalonDock/Xceed.Wpf.AvalonDock.csproj
+@@ -16,31 +16,45 @@
+     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
++  <PropertyGroup>
++    <SignAssembly>false</SignAssembly>
++  </PropertyGroup>
++  <PropertyGroup>
++    <AssemblyOriginatorKeyFile>
++    </AssemblyOriginatorKeyFile>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>full</DebugType>
+     <Optimize>false</Optimize>
+-    <OutputPath>bin\Debug\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>DEBUG</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+-    <DebugType>pdbonly</DebugType>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
++    <DebugType>none</DebugType>
+     <Optimize>true</Optimize>
+-    <OutputPath>bin\Release\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+-    <DocumentationFile>
+-    </DocumentationFile>
+   </PropertyGroup>
+-  <PropertyGroup>
+-    <SignAssembly>false</SignAssembly>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MinSizeRel|x64'">
++    <DebugType>pdbonly</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup>
+-    <AssemblyOriginatorKeyFile>
+-    </AssemblyOriginatorKeyFile>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RelWithDebInfo|x64'">
++    <DebugType>pdbonly</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="System" />
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Properties/AssemblyInfo.cs Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Properties/AssemblyInfo.cs
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Properties/AssemblyInfo.cs
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Properties/AssemblyInfo.cs
+@@ -104,7 +104,7 @@ using System.Windows.Markup;
+ 
+ #pragma warning disable 1699
+ [assembly: AssemblyDelaySign( false )]
+-[assembly: AssemblyKeyFile( @"..\..\sn.snk" )]
++[assembly: AssemblyKeyFile( @"..\..\..\sn.snk" )]
+ [assembly: AssemblyKeyName( "" )]
+ #pragma warning restore 1699
+ 
+diff -u -r Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Xceed.Wpf.Toolkit.csproj Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Xceed.Wpf.Toolkit.csproj
+--- Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Xceed.Wpf.Toolkit.csproj
++++ Source/ExtendedWPFToolkitSolution/Src/Xceed.Wpf.Toolkit/Xceed.Wpf.Toolkit.csproj
+@@ -16,25 +16,41 @@
+     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+     <DebugSymbols>true</DebugSymbols>
+     <DebugType>full</DebugType>
+     <Optimize>false</Optimize>
+-    <OutputPath>bin\Debug\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>DEBUG;TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
++  <PropertyGroup>
++    <StartupObject />
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
++    <DebugType>none</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
++  </PropertyGroup>
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'MinSizeRel|x64'">
+     <DebugType>pdbonly</DebugType>
+     <Optimize>true</Optimize>
+-    <OutputPath>bin\Release\</OutputPath>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
+     <DefineConstants>TRACE</DefineConstants>
+     <ErrorReport>prompt</ErrorReport>
+     <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+-  <PropertyGroup>
+-    <StartupObject />
++  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'RelWithDebInfo|x64'">
++    <DebugType>pdbonly</DebugType>
++    <Optimize>true</Optimize>
++    <OutputPath>..\..\..\..\bin\</OutputPath>
++    <DefineConstants>TRACE</DefineConstants>
++    <ErrorReport>prompt</ErrorReport>
++    <WarningLevel>4</WarningLevel>
+   </PropertyGroup>
+   <ItemGroup>
+     <Reference Include="System" />
