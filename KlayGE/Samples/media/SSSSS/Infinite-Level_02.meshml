@@ -2,7 +2,7 @@
 
 <model version="6">
 	<materials_chunk>
-		<material ambient="0.55 0.55 0.55" diffuse="0.55 0.55 0.55" specular="0.9 0.9 0.9" emit="0 0 0" opacity="1" specular_level="0" shininess="30">
+		<material ambient="0.55 0.55 0.55" diffuse="0.55 0.55 0.55" specular="0.028 0.028 0.028" emit="0 0 0" opacity="1" specular_level="0" shininess="30" sss="1">
 			<texture type="Diffuse Color" name="Map-COL.dds"/>
 			<texture type="Bump" name="Infinite-Level_02_Tangent_SmoothUV.dds"/>
 		</material>
