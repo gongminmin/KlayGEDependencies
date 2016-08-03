@@ -2,9 +2,11 @@
 
 <model version="6">
 	<materials_chunk>
-		<material ambient="0 0 0" diffuse="0 0 0" specular="0 0 0" emit="0 0 0" opacity="1" shininess="4" sss="0">
-			<texture type="Diffuse Color" name="WC_Euphorbia-larica.dds"/>
-			<texture type="Opacity" name="WC_Euphorbia-larica.dds"/>
+		<material>
+			<albedo color="1 1 1 1" texture="WC_Euphorbia-larica.dds"/>
+			<metalness value="0"/>
+			<glossiness value="0.153846"/>
+			<alpha_test value="0.2"/>
 		</material>
 	</materials_chunk>
 	<meshes_chunk>
