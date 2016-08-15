@@ -2,11 +2,12 @@
 
 <model version="6">
 	<materials_chunk>
-		<material ambient="0.588235 0.588235 0.588235" diffuse="0.588235 0.588235 0.588235" specular="0.9 0.9 0.9" emit="0 0 0" opacity="1" specular_level="0" shininess="10">
-			<texture type="Diffuse Color" name="robot-clean_diffuse.dds"/>
-			<texture type="Specular Level" name="robot-clean_specular.dds"/>
-			<texture type="Self-Illumination" name="robot-clean_selfillumination.dds"/>
-			<texture type="Bump" name="robot-clean_normal.dds"/>
+		<material name="Material 0">
+			<albedo color="1 1 1 1" texture="robot-clean_diffuse.dds"/>
+			<metalness value="0.8"/>
+			<glossiness value="0.5" texture="robot-clean_specular.dds"/>
+			<emissive color="16 16 16" texture="robot-clean_selfillumination.dds"/>
+			<normal texture="robot-clean_normal.dds"/>
 		</material>
 	</materials_chunk>
 	<meshes_chunk>
