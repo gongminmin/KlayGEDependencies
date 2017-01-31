@@ -2,11 +2,19 @@
 
 <model version="6">
 	<materials_chunk>
-		<material ambient="0.2 0.2 0.2" diffuse="0.7 0.7 0.7" specular="0.2 0.2 0.2" emit="0 0 0" opacity="1" shininess="8" sss="0">
-			<texture type="Diffuse Color" name="Grass1.dds"/>
+		<material>
+			<albedo color="1 1 1 1" texture="Grass1.dds"/>
+			<metalness value="0"/>
+			<glossiness value="0.23077"/>
+			<alpha_test value="0.2"/>
+			<two_sided value="1"/>
 		</material>
-		<material ambient="0.2 0.2 0.2" diffuse="0.7 0.7 0.7" specular="0.2 0.2 0.2" emit="0 0 0" opacity="1" shininess="8" sss="0">
-			<texture type="Diffuse Color" name="Grass4.dds"/>
+		<material>
+			<albedo color="1 1 1 1" texture="Grass4.dds"/>
+			<metalness value="0"/>
+			<glossiness value="0.23077"/>
+			<alpha_test value="0.2"/>
+			<two_sided value="1"/>
 		</material>
 	</materials_chunk>
 	<meshes_chunk>
