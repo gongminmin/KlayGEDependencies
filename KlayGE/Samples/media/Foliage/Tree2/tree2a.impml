@@ -4,6 +4,6 @@
 	<azimuth value="8"/>
 	<elevation value="1"/>
 	<size value="256"/>
-	<rt0 name="tree2a_lod0.imposter.rt0.dds"/>
-	<rt1 name="tree2a_lod0.imposter.rt1.dds"/>
+	<rt0 name="tree2a.imposter.rt0.dds"/>
+	<rt1 name="tree2a.imposter.rt1.dds"/>
 </imposter>
