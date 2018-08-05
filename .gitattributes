@@ -1,1 +1,3 @@
 *.meshml        eol=lf
+*.mtl           eol=lf
+*.obj           eol=lf

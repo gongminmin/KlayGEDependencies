@@ -1,0 +1,334 @@
+<?xml version="1.0"?>
+
+<model version="6">
+	<bones_chunk>
+		<bone name="RootNode" parent="-1">
+			<real v="0 0 0 0.999996"/>
+			<dual v="0 0 0 0"/>
+		</bone>
+		<bone name="Bone001_$AssimpFbx$_Translation" parent="0">
+			<real v="0 0 0 0.999996"/>
+			<dual v="0 0 0 0"/>
+		</bone>
+		<bone name="Bone001_$AssimpFbx$_PreRotation" parent="1">
+			<real v="0 0 0 0.999996"/>
+			<dual v="0 0 0 0"/>
+		</bone>
+		<bone name="Bone001_$AssimpFbx$_Rotation" parent="2">
+			<real v="0 0 0 0.999996"/>
+			<dual v="0 0 0 0"/>
+		</bone>
+		<bone name="Bone001" parent="3">
+			<real v="0.496083 0.503882 -0.503882 0.496083"/>
+			<dual v="-0.00952601 5.00307 5.00307 0.00952601"/>
+		</bone>
+		<bone name="Bone002" parent="4">
+			<real v="0.165216 0.687531 -0.687531 0.165216"/>
+			<dual v="1.0144 3.35637 3.35637 -1.0144"/>
+		</bone>
+		<bone name="Bone003" parent="5">
+			<real v="0.256275 -0.659029 0.659029 0.256275"/>
+			<dual v="-1.88804 -0.688591 -0.688591 1.88804"/>
+		</bone>
+		<bone name="Bone004" parent="6">
+			<real v="0.256275 -0.659029 0.659029 0.256275"/>
+			<dual v="-0.187025 3.68569 3.68569 0.187025"/>
+		</bone>
+	</bones_chunk>
+	<materials_chunk>
+		<material name="DefaultMaterial">
+			<albedo color="0.8 0.8 0.8 1"/>
+		</material>
+	</materials_chunk>
+	<meshes_chunk>
+		<mesh name="" mtl_id="0">
+			<vertices_chunk>
+				<pos_bb min="-10.226 -2.42125 -9.86704" max="9.81128 1.2814 10.0888"/>
+				<tc_bb min="-19.0373 -18.9558" max="20.0373 1"/>
+
+				<vertex v="-10.226 -2.42125 -9.86704">
+					<tangent_quat v="0.00556775 -0.707079 0.707079 0.00556775"/>
+					<tex_coord v="1 1"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 -2.42125 10.0888">
+					<tangent_quat v="0.00556775 -0.707079 0.707079 0.00556775"/>
+					<tex_coord v="1 -18.9558"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 -2.42125 10.0888">
+					<tangent_quat v="0.00556775 -0.707079 0.707079 0.00556775"/>
+					<tex_coord v="-19.0373 -18.9558"/>
+					<weight joint="4" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 -2.42125 -9.86704">
+					<tangent_quat v="0.00556775 -0.707079 0.707079 0.00556775"/>
+					<tex_coord v="-19.0373 1"/>
+					<weight joint="5" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 1.2814 -9.86704">
+					<tangent_quat v="0.712646 0 0 -0.701511"/>
+					<tex_coord v="0 1"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 1.2814 -9.86704">
+					<tangent_quat v="0.712646 0 0 -0.701511"/>
+					<tex_coord v="20.0373 1"/>
+					<weight joint="5" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 1.2814 10.0888">
+					<tangent_quat v="0.712646 0 0 -0.701511"/>
+					<tex_coord v="20.0373 -18.9558"/>
+					<weight joint="4" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 1.2814 10.0888">
+					<tangent_quat v="0.712646 0 0 -0.701511"/>
+					<tex_coord v="0 -18.9558"/>
+					<weight joint="6 7" weight="0.99982 0.000180094"/>
+				</vertex>
+				<vertex v="-10.226 -2.42125 -9.86704">
+					<tangent_quat v="0.999991 0 0 -2.98023e-08"/>
+					<tex_coord v="0 1"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 -2.42125 -9.86704">
+					<tangent_quat v="0.999991 0 0 -2.98023e-08"/>
+					<tex_coord v="20.0373 1"/>
+					<weight joint="5" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 1.2814 -9.86704">
+					<tangent_quat v="0.999991 0 0 -2.98023e-08"/>
+					<tex_coord v="20.0373 -2.70265"/>
+					<weight joint="5" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 1.2814 -9.86704">
+					<tangent_quat v="0.999991 0 0 -2.98023e-08"/>
+					<tex_coord v="0 -2.70265"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 -2.42125 -9.86704">
+					<tangent_quat v="0.707101 -1.51992e-06 0.707101 -1.51992e-06"/>
+					<tex_coord v="0 1"/>
+					<weight joint="5" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 -2.42125 10.0888">
+					<tangent_quat v="0.707101 -1.51992e-06 0.707101 -1.51992e-06"/>
+					<tex_coord v="19.9558 1"/>
+					<weight joint="4" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 1.2814 10.0888">
+					<tangent_quat v="0.707101 -1.51992e-06 0.707101 -1.51992e-06"/>
+					<tex_coord v="19.9558 -2.70265"/>
+					<weight joint="4" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 1.2814 -9.86704">
+					<tangent_quat v="0.707101 -1.51992e-06 0.707101 -1.51992e-06"/>
+					<tex_coord v="0 -2.70265"/>
+					<weight joint="5" weight="1"/>
+				</vertex>
+				<vertex v="9.81128 -2.42125 10.0888">
+					<tangent_quat v="0.00556775 -5.96046e-08 0.99996 0.00556775"/>
+					<tex_coord v="0 1"/>
+					<weight joint="4" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 -2.42125 10.0888">
+					<tangent_quat v="0.00556775 -5.96046e-08 0.99996 0.00556775"/>
+					<tex_coord v="20.0373 1"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 1.2814 10.0888">
+					<tangent_quat v="0.00556775 -5.96046e-08 0.99996 0.00556775"/>
+					<tex_coord v="20.0373 -2.70265"/>
+					<weight joint="6 7" weight="0.99982 0.000180094"/>
+				</vertex>
+				<vertex v="9.81128 1.2814 10.0888">
+					<tangent_quat v="0.00556775 -5.96046e-08 0.99996 0.00556775"/>
+					<tex_coord v="0 -2.70265"/>
+					<weight joint="4" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 -2.42125 10.0888">
+					<tangent_quat v="0.707101 1.51992e-06 -0.707101 -1.51992e-06"/>
+					<tex_coord v="0 1"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 -2.42125 -9.86704">
+					<tangent_quat v="0.707101 1.51992e-06 -0.707101 -1.51992e-06"/>
+					<tex_coord v="19.9558 1"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 1.2814 -9.86704">
+					<tangent_quat v="0.707101 1.51992e-06 -0.707101 -1.51992e-06"/>
+					<tex_coord v="19.9558 -2.70265"/>
+					<weight joint="6" weight="1"/>
+				</vertex>
+				<vertex v="-10.226 1.2814 10.0888">
+					<tangent_quat v="0.707101 1.51992e-06 -0.707101 -1.51992e-06"/>
+					<tex_coord v="0 -2.70265"/>
+					<weight joint="6 7" weight="0.99982 0.000180094"/>
+				</vertex>
+			</vertices_chunk>
+			<triangles_chunk>
+				<triangle index="3 2 1"/>
+				<triangle index="3 1 0"/>
+				<triangle index="7 6 5"/>
+				<triangle index="7 5 4"/>
+				<triangle index="11 10 9"/>
+				<triangle index="11 9 8"/>
+				<triangle index="15 14 13"/>
+				<triangle index="15 13 12"/>
+				<triangle index="19 18 17"/>
+				<triangle index="19 17 16"/>
+				<triangle index="23 22 21"/>
+				<triangle index="23 21 20"/>
+			</triangles_chunk>
+		</mesh>
+	</meshes_chunk>
+	<key_frames_chunk num_frames="31" frame_rate="25">
+		<key_frame joint="0">
+			<key id="0">
+				<real v="0 0 0 0.999996"/>
+				<dual v="0 0 0 0"/>
+			</key>
+		</key_frame>
+		<key_frame joint="1">
+			<key id="0">
+				<real v="0 0 0 0.999996"/>
+				<dual v="5.03248 0 4.9735 0"/>
+			</key>
+		</key_frame>
+		<key_frame joint="2">
+			<key id="0">
+				<real v="0.707104 0 0 0.707104"/>
+				<dual v="0 0 0 0"/>
+			</key>
+		</key_frame>
+		<key_frame joint="3">
+			<key id="0">
+				<real v="0 0 -0.7126 0.701571"/>
+				<dual v="0 0 0 0"/>
+			</key>
+			<key id="20">
+				<real v="0.184901 0.187808 -0.687406 0.676767"/>
+				<dual v="0 0 0 0"/>
+			</key>
+			<key id="21">
+				<real v="0.179796 0.182623 -0.688801 0.678141"/>
+				<dual v="0 0 0 0"/>
+			</key>
+			<key id="24">
+				<real v="-0.0536194 -0.0544624 -0.710516 0.699519"/>
+				<dual v="0 0 0 0"/>
+			</key>
+			<key id="25">
+				<real v="-0.0617751 -0.0629012 -0.709832 0.698831"/>
+				<dual v="0 0 0 0"/>
+			</key>
+			<key id="30">
+				<real v="-0.032448 -0.0340421 -0.711862 0.700743"/>
+				<dual v="0 0 0 0"/>
+			</key>
+		</key_frame>
+		<key_frame joint="4">
+			<key id="0">
+				<real v="0 0 0 0.999996"/>
+				<dual v="0 0 0 0"/>
+			</key>
+		</key_frame>
+		<key_frame joint="5">
+			<key id="0">
+				<real v="0 0 -0.515651 0.856799"/>
+				<dual v="4.50675 2.7123 0 0"/>
+			</key>
+			<key id="16">
+				<real v="0.118613 0.197086 -0.501824 0.833823"/>
+				<dual v="4.3859 2.63957 1.03667 -0.6239"/>
+			</key>
+			<key id="17">
+				<real v="0.119325 0.200429 -0.505293 0.830824"/>
+				<dual v="4.37012 2.65782 1.05425 -0.627642"/>
+			</key>
+			<key id="24">
+				<real v="0.0311533 0.0990738 -0.59508 0.796928"/>
+				<dual v="4.19183 3.1301 0.521125 -0.163863"/>
+			</key>
+			<key id="25">
+				<real v="0.0225524 0.087771 -0.596295 0.797634"/>
+				<dual v="4.19554 3.13649 0.461673 -0.118624"/>
+			</key>
+			<key id="30">
+				<real v="-0.0163681 0.0345079 -0.590347 0.806245"/>
+				<dual v="4.24084 3.1052 0.181509 0.0860973"/>
+			</key>
+		</key_frame>
+		<key_frame joint="6">
+			<key id="0">
+				<real v="0 0 -0.570164 0.821531"/>
+				<dual v="4.62088 3.20701 0 0"/>
+			</key>
+			<key id="8">
+				<real v="0.147157 0.212034 -0.550846 0.793697"/>
+				<dual v="4.46432 3.09835 1.19263 -0.827718"/>
+			</key>
+			<key id="9">
+				<real v="0.145806 0.214879 -0.558625 0.787722"/>
+				<dual v="4.43071 3.1421 1.20863 -0.820119"/>
+			</key>
+			<key id="24">
+				<real v="-0.0238142 0.0763369 -0.739381 0.668522"/>
+				<dual v="3.76025 4.1588 0.429376 0.133944"/>
+			</key>
+			<key id="25">
+				<real v="-0.0239772 0.0774712 -0.759426 0.64552"/>
+				<dual v="3.63087 4.27155 0.435754 0.134865"/>
+			</key>
+			<key id="30">
+				<real v="-0.0131884 0.0925311 -0.856567 0.507501"/>
+				<dual v="2.85455 4.81794 0.520461 0.0741809"/>
+			</key>
+		</key_frame>
+		<key_frame joint="7">
+			<key id="0">
+				<real v="0 0 0 0.999996"/>
+				<dual v="6.63744 2.38418e-07 0 0"/>
+			</key>
+		</key_frame>
+	</key_frames_chunk>
+	<bb_key_frames_chunk>
+		<bb_key_frame mesh="0">
+			<key id="0" min="-10.2258 -2.42122 -9.86681" max="9.81111 1.28138 10.0888"/>
+			<key id="1" min="-10.3813 -2.42413 -9.95206" max="9.84583 2.83324 10.1328"/>
+			<key id="2" min="-10.4887 -2.42533 -10.0146" max="9.88376 4.36545 10.2445"/>
+			<key id="3" min="-10.547 -2.42479 -10.0543" max="9.92484 5.86564 10.4229"/>
+			<key id="4" min="-10.5555 -2.42254 -10.0708" max="9.96906 7.32195 10.6658"/>
+			<key id="5" min="-10.5136 -2.41855 -10.064" max="10.0164 8.72317 10.9697"/>
+			<key id="6" min="-10.4211 -2.41285 -10.0338" max="10.0667 10.0589 11.3299"/>
+			<key id="7" min="-10.2782 -2.40544 -9.98012" max="10.1201 11.3197 11.7403"/>
+			<key id="8" min="-10.0852 -2.39631 -9.90293" max="10.1765 12.4972 12.194"/>
+			<key id="9" min="-9.97454 -2.38547 -9.80221" max="10.2357 13.4403 12.805"/>
+			<key id="10" min="-9.90432 -2.37294 -9.67804" max="10.2979 14.3617 13.4418"/>
+			<key id="11" min="-9.81429 -2.35873 -9.53051" max="10.3628 15.2122 14.1678"/>
+			<key id="12" min="-9.70544 -2.34283 -9.35974" max="10.4305 15.9894 14.8118"/>
+			<key id="13" min="-9.57882 -2.32527 -9.16592" max="10.501 16.6917 15.3702"/>
+			<key id="14" min="-9.43549 -2.30606 -8.94928" max="10.574 17.3177 15.8404"/>
+			<key id="15" min="-9.27653 -2.2852 -8.7101" max="10.6497 17.8666 16.2203"/>
+			<key id="16" min="-9.10304 -2.26272 -8.44866" max="10.7278 18.3381 16.5087"/>
+			<key id="17" min="-9.18016 -2.23863 -8.19241" max="10.6672 18.3517 16.668"/>
+			<key id="18" min="-9.73536 -2.21295 -7.97658" max="10.3247 17.5273 16.6655"/>
+			<key id="19" min="-10.2201 -2.18569 -7.75169" max="9.98288 16.6315 16.5789"/>
+			<key id="20" min="-10.6323 -2.15688 -7.51865" max="9.81111 15.6713 16.4107"/>
+			<key id="21" min="-10.9699 -2.17335 -7.68571" max="9.81111 14.4046 16.1076"/>
+			<key id="22" min="-11.2315 -2.35806 -9.32197" max="9.81111 11.5308 15.572"/>
+			<key id="23" min="-11.4161 -2.42517 -9.93409" max="9.8111 8.2734 15.1792"/>
+			<key id="24" min="-11.5227 -3.97605 -9.60825" max="9.81111 4.91046 15.1733"/>
+			<key id="25" min="-11.4057 -4.55837 -9.59447" max="9.81139 4.13103 15.149"/>
+			<key id="26" min="-11.1996 -4.36285 -9.61596" max="9.81173 3.84806 14.9307"/>
+			<key id="27" min="-10.9366 -4.16473 -9.63501" max="9.81206 3.55851 14.6248"/>
+			<key id="28" min="-10.6186 -3.96396 -9.65162" max="9.8124 3.26637 14.2347"/>
+			<key id="29" min="-10.2478 -3.7605 -9.6658" max="9.81274 2.97558 13.764"/>
+			<key id="30" min="-9.82667 -3.55431 -9.67755" max="9.81308 2.68997 13.2168"/>
+		</bb_key_frame>
+	</bb_key_frames_chunk>
+	<actions_chunk>
+		<action name="Take 001" start="0" end="31"/>
+	</actions_chunk>
+</model>

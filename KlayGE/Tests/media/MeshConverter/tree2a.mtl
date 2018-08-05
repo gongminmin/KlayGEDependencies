@@ -1,0 +1,15 @@
+newmtl bark
+	Ka 0 0 0
+	Kd 0.6 0.6 0.6
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Kd bark2.tga
+	map_bump -bm 0.250000 bark2_nmp.tga
+
+newmtl leafs
+	Ka 0 0 0
+	Kd 0.6 0.6 0.6
+	Ks 0 0 0
+	Ke 0 0 0
+	map_Kd leafs2.tga
+	map_d leafs2.tga
