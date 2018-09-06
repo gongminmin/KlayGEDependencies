@@ -41,7 +41,7 @@
 		</material>
 	</materials_chunk>
 	<meshes_chunk>
-		<mesh name="" mtl_id="0">
+		<mesh name="Box001" mtl_id="0">
 			<vertices_chunk>
 				<pos_bb min="-10.226025 -2.4212499 -9.8670387" max="9.8106651 1.2812872 10.088167"/>
 				<tc_bb min="-19.0373 -18.955812" max="20.036106 0.99908733"/>
