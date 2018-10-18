@@ -3,11 +3,11 @@
 <model version="6">
 	<materials_chunk>
 		<material name="Material 0">
-			<albedo color="1 1 1 1" texture="robot-clean_diffuse.dds"/>
+			<albedo color="1 1 1 1" texture="robot-clean_diffuse.jpg"/>
 			<metalness value="0.8"/>
-			<glossiness value="0.5" texture="robot-clean_specular.dds"/>
-			<emissive color="16 16 16" texture="robot-clean_selfillumination.dds"/>
-			<normal texture="robot-clean_normal.dds"/>
+			<glossiness value="0.5" texture="robot-clean_specular.jpg"/>
+			<emissive color="16 16 16" texture="robot-clean_selfillumination.jpg"/>
+			<normal texture="robot-clean_normal.jpg"/>
 		</material>
 	</materials_chunk>
 	<meshes_chunk>

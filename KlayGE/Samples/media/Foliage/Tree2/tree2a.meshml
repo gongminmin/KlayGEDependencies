@@ -3,13 +3,13 @@
 <model version="6">
 	<materials_chunk>
 		<material>
-			<albedo color="0.6 0.6 0.6 1" texture="bark2.dds"/>
+			<albedo color="0.6 0.6 0.6 1" texture="bark2.jpg"/>
 			<metalness value="0"/>
 			<glossiness value="0"/>
-			<normal texture="bark2_nmp.dds"/>
+			<normal texture="bark2_nmp.jpg"/>
 		</material>
 		<material>
-			<albedo color="0.6 0.6 0.6 1" texture="leafs2.dds"/>
+			<albedo color="0.6 0.6 0.6 1" texture="leafs2.png"/>
 			<metalness value="0"/>
 			<glossiness value="0"/>
 			<alpha_test value="0.2"/>

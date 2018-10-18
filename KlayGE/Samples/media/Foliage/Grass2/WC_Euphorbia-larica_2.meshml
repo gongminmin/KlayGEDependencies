@@ -3,7 +3,7 @@
 <model version="6">
 	<materials_chunk>
 		<material>
-			<albedo color="1 1 1 1" texture="WC_Euphorbia-larica.dds"/>
+			<albedo color="1 1 1 1" texture="WC_Euphorbia-larica.png"/>
 			<metalness value="0"/>
 			<glossiness value="0.153846"/>
 			<alpha_test value="0.2"/>

@@ -5,34 +5,34 @@
 		<material ambient="0 0 0" diffuse="0.603922 0.603922 0.603922" specular="0.0705882 0.0705882 0.0705882" emit="0 0 0" opacity="1" specular_level="0.05" shininess="19"/>
 		<material ambient="0 0 0" diffuse="0.74902 0.74902 0.74902" specular="0.00784314 0.00784314 0.00784314" emit="0 0 0" opacity="1" specular_level="0.05" shininess="10"/>
 		<material ambient="0 0 0" diffuse="0.482353 0.482353 0.482353" specular="0.00784314 0.00784314 0.00784314" emit="0 0 0" opacity="1" specular_level="0.05" shininess="12">
-			<texture type="Diffuse Color" name="tau_bump.dds"/>
+			<texture type="Diffuse Color" name="tau_bump.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.176471 0.184314 0.215686" specular="0.282353 0.298039 0.345098" emit="0 0 0" opacity="1" specular_level="0.05" shininess="40"/>
 		<material ambient="0 0 0" diffuse="0.054902 0.054902 0.0627451" specular="0.145098 0.152941 0.172549" emit="0 0 0" opacity="1" specular_level="0.05" shininess="40"/>
 		<material ambient="0 0 0" diffuse="0.745098 0.745098 0.745098" specular="0.0705882 0.0705882 0.0705882" emit="0 0 0" opacity="1" specular_level="0.05" shininess="19">
-			<texture type="Diffuse Color" name="stones.dds"/>
+			<texture type="Diffuse Color" name="stones.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.745098 0.745098 0.745098" specular="0.0117647 0.0117647 0.0117647" emit="0 0 0" opacity="1" specular_level="0.05" shininess="12">
-			<texture type="Diffuse Color" name="p12_fb.dds"/>
+			<texture type="Diffuse Color" name="p12_fb.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.54902 0.54902 0.54902" specular="0.0392157 0.0392157 0.0392157" emit="0 0 0" opacity="1" specular_level="0.05" shininess="14">
-			<texture type="Diffuse Color" name="p12_fb.dds"/>
+			<texture type="Diffuse Color" name="p12_fb.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.666667 0.666667 0.666667" specular="0.0705882 0.0705882 0.0705882" emit="0 0 0" opacity="1" specular_level="0.05" shininess="19">
-			<texture type="Diffuse Color" name="p12_fb.dds"/>
+			<texture type="Diffuse Color" name="p12_fb.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.705882 0.705882 0.705882" specular="0.0117647 0.0117647 0.0117647" emit="0 0 0" opacity="1" specular_level="0.05" shininess="12">
-			<texture type="Diffuse Color" name="p12_f.dds"/>
+			<texture type="Diffuse Color" name="p12_f.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.705882 0.705882 0.705882" specular="0.0117647 0.0117647 0.0117647" emit="0 0 0" opacity="1" specular_level="0.05" shininess="12">
-			<texture type="Diffuse Color" name="p12_f.dds"/>
+			<texture type="Diffuse Color" name="p12_f.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.690196 0.690196 0.690196" specular="0.0392157 0.0392157 0.0392157" emit="0 0 0" opacity="1" specular_level="0.05" shininess="14">
-			<texture type="Diffuse Color" name="tau_bump.dds"/>
+			<texture type="Diffuse Color" name="tau_bump.jpg"/>
 		</material>
 		<material ambient="0 0 0" diffuse="0.313726 0.254902 0.203922" specular="0 0 0" emit="0 0 0" opacity="1" specular_level="0.05" shininess="20"/>
 		<material ambient="0 0 0" diffuse="0.627451 0.627451 0.627451" specular="0.0117647 0.0117647 0.0117647" emit="0 0 0" opacity="1" specular_level="0.05" shininess="12">
-			<texture type="Diffuse Color" name="tau_bump.dds"/>
+			<texture type="Diffuse Color" name="tau_bump.jpg"/>
 		</material>
 	</materials_chunk>
 	<meshes_chunk>

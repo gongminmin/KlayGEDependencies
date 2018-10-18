@@ -3,16 +3,16 @@
 <model version="6">
 	<materials_chunk>
 		<material name="Attack_Droid_Back_01">
-			<albedo color="0.588 0.588 0.588 1" texture="At_Droid_back_diffuse.dds"/>
-			<glossiness value="0.409379" texture="At_Droid_back_specular.dds"/>
+			<albedo color="0.588 0.588 0.588 1" texture="At_Droid_back_diffuse.jpg"/>
+			<glossiness value="0.409379" texture="At_Droid_back_specular.jpg"/>
 			<metalness value="0.6"/>
-			<normal texture="At_Droid_back_normal.dds"/>
+			<normal texture="At_Droid_back_normal.jpg"/>
 		</material>
 		<material name="Attack_Droid_Front_01">
-			<albedo color="0.588 0.588 0.588 1" texture="At_Droid_top_diffuse.dds"/>
-			<glossiness value="0.409379" texture="At_Droid_top_specular.dds"/>
+			<albedo color="0.588 0.588 0.588 1" texture="At_Droid_top_diffuse.jpg"/>
+			<glossiness value="0.409379" texture="At_Droid_top_specular.jpg"/>
 			<metalness value="0.6"/>
-			<normal texture="At_Droid_top_normal.dds"/>
+			<normal texture="At_Droid_top_normal.jpg"/>
 		</material>
 	</materials_chunk>
 	<meshes_chunk>
